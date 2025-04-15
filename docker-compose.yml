@@ -1,0 +1,9 @@
+services:
+  #zola:
+
+  caddy:
+    container_name: "caddy"
+    image: "caddy:latest"
+    ports:
+      - "80:80"
+      - "443:443"

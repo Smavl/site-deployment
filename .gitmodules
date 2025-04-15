@@ -1,0 +1,6 @@
+[submodule "zola-site"]
+	path = zola-site
+	url = https://github.com/Smavl/zola-site.git
+[submodule "projects/BackdoorBag"]
+	path = projects/BackdoorBag
+	url = https://github.com/Smavl/BackdoorBag

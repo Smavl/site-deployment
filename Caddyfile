@@ -1,0 +1,7 @@
+smavl.rocks {
+    root * /var/www/zola
+    fileserver
+}
+smavl.rocks/projects/{
+    root * /var/www/zola
+}

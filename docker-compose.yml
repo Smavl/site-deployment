@@ -1,9 +1,23 @@
 services:
-  #zola:
-
   caddy:
     container_name: "caddy"
     image: "caddy:latest"
     ports:
       - "80:80"
       - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - www:/var/www
+      - ./projects/BackdoorBag:/var/www/projects/backdoorbag
+
+  zola:
+    container_name: "zola-build"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - www:/var/www
+
+# shared volume
+volumes:
+  www:

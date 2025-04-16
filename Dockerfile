@@ -1,5 +1,5 @@
-FROM ghcr.io/getzola/zola:v0.17.1 as zola
+FROM ghcr.io/getzola/zola:v0.20.0 AS zola
 
-WORKDIR /zola-site
-COPY . /var/www/zola
-RUN ["zola", "build"]
+COPY ./zola-site/page /var/www/zola
+WORKDIR /var/www/zola
+RUN ["zola", "--root", "/var/www/zola", "build", "--base-url", "http://localhost"]

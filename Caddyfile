@@ -11,4 +11,8 @@ http://localhost {
         output file /var/log/caddy/my-static-site.log
     }
 
+    header {
+        ?Cache-Control "max-age=1800"
+    }
+
 }

@@ -6,4 +6,9 @@ http://localhost {
         root * /var/www
         file_server
     }
+
+    log {
+        output file /var/log/caddy/my-static-site.log
+    }
+
 }

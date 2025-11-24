@@ -1,0 +1,12 @@
+.git
+.gitignore
+.gitmodules
+*.md
+README.md
+LICENSE
+restart.sh
+remove-submodules.sh
+docker-compose.yml
+.dockerignore
+zola-site
+projects

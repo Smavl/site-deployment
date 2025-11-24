@@ -1,23 +1,22 @@
 services:
   caddy:
-    container_name: "caddy"
-    image: "caddy:latest"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: smavl-site:${VERSION:-latest}
+    container_name: caddy
+    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-      - www:/var/www
-      - ./projects/BackdoorBag:/var/www/projects/backdoorbag
+      - caddy_data:/data
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
 
-  zola:
-    container_name: "zola-build"
-    build:
-      context: .
-      dockerfile: Dockerfile
-    volumes:
-      - www:/var/www
-
-# shared volume
 volumes:
-  www:
+  caddy_data:

@@ -1,30 +1,27 @@
-# Stage 1: Clone repositories
-FROM alpine:latest AS cloner
+# Stage 1: Clone and build
+FROM alpine:latest AS builder
 
-# Install git
-RUN apk add --no-cache git
+# Install git and dependencies for Zola
+RUN apk add --no-cache git curl
+
+# Download and install Zola
+RUN curl -sL https://github.com/getzola/zola/releases/download/v0.20.0/zola-v0.20.0-x86_64-unknown-linux-musl.tar.gz | tar xz -C /usr/local/bin
 
 # Clone the zola-site repo with all submodules (includes theme)
 RUN git clone --recurse-submodules https://github.com/Smavl/zola-site.git /zola-site
-
-# Clone BackdoorBag project
-RUN git clone https://github.com/Smavl/BackdoorBag /backdoorbag
-
-# Stage 2: Build with Zola
-FROM ghcr.io/getzola/zola:v0.20.0 AS builder
-
-# Copy cloned repos from previous stage
-COPY --from=cloner /zola-site /zola-site
 
 # Build the static site
 WORKDIR /zola-site/page
 RUN zola build --base-url "https://smavl.rocks"
 
-# Stage 3: Production - Caddy server
+# Clone BackdoorBag project
+RUN git clone https://github.com/Smavl/BackdoorBag /backdoorbag
+
+# Stage 2: Production - Caddy server
 FROM caddy:2.8-alpine
 
-# Copy BackdoorBag from cloner stage
-COPY --from=cloner /backdoorbag /var/www/projects/backdoorbag
+# Copy BackdoorBag from builder stage
+COPY --from=builder /backdoorbag /var/www/projects/backdoorbag
 
 # Copy built site from builder stage
 COPY --from=builder /zola-site/page/public /var/www/zola/public

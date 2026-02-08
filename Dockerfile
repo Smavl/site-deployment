@@ -37,4 +37,4 @@ EXPOSE 80 443
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
-    CMD wget --spider -q http://localhost:80 || exit 1
+    CMD wget --spider -q http://localhost/health || exit 1

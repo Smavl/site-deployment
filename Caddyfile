@@ -1,3 +1,7 @@
+localhost {
+    respond /health 200
+}
+
 smavl.rocks {
    root * /var/www/zola/public
    file_server

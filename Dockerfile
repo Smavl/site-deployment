@@ -18,7 +18,7 @@ COPY --from=cloner /zola-site/page /site
 
 # Build using Zola (the image has zola as entrypoint)
 WORKDIR /site
-RUN ["/bin/zola", "build", "--base-url", "https://smavl.rocks"]
+RUN ["/zola", "build", "--base-url", "https://smavl.rocks"]
 
 # Stage 3: Production - Caddy server
 FROM caddy:2.11.4-alpine

@@ -11,7 +11,7 @@ RUN git clone --recurse-submodules https://github.com/Smavl/zola-site.git /zola-
 RUN git clone https://github.com/Smavl/BackdoorBag /backdoorbag
 
 # Stage 2: Build with Zola using the official image
-FROM ghcr.io/getzola/zola:v0.20.0 AS builder
+FROM ghcr.io/getzola/zola:v0.23.4 AS builder
 
 # Copy the cloned site from previous stage
 COPY --from=cloner /zola-site/page /site
@@ -21,7 +21,7 @@ WORKDIR /site
 RUN ["/bin/zola", "build", "--base-url", "https://smavl.rocks"]
 
 # Stage 3: Production - Caddy server
-FROM caddy:2.8-alpine
+FROM caddy:2.11.4-alpine
 
 # Copy BackdoorBag from cloner stage
 COPY --from=cloner /backdoorbag /var/www/projects/backdoorbag

@@ -8,7 +8,7 @@ export VERSION=$(git rev-parse --short HEAD)
 git pull
 
 # Build and deploy (Docker will fetch latest zola-site and BackdoorBag)
-docker compose build --no-cache
+docker compose build --no-cache --force-recreate
 docker compose up -d
 
 echo "Deployment complete! Version: ${VERSION}"

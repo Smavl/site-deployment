@@ -1,22 +1,39 @@
 localhost {
-    respond /health 200
+	respond /health 200
 }
 
 smavl.rocks {
-   root * /var/www/zola/public
-   file_server
+	root * /var/www/zola/public
+	file_server
 
-   handle /projects/backdoorbag/* {
-        root * /var/www
-        file_server
-    }
+	# Compress text responses (Caddy skips already-compressed types)
+	encode gzip zstd
 
-    log {
-        output file /var/log/caddy/site.log
-    }
+	handle /projects/backdoorbag/* {
+		root * /var/www
+		file_server
+	}
 
-    header {
-        Cache-Control "max-age=1800"
-    }
+	log {
+		output file /var/log/caddy/site.log
+	}
 
+	header {
+		Cache-Control "max-age=1800"
+
+		# --- Security headers ---
+		# HSTS: pin browsers to HTTPS. Rolled out conservatively at 30 days;
+		# once you're confident nothing breaks, raise to 31536000 (1 year) and
+		# consider "; includeSubDomains; preload". Note: shortening later only
+		# takes effect after the current max-age expires in each browser.
+		Strict-Transport-Security "max-age=2592000"
+		# Don't let the browser MIME-sniff responses.
+		X-Content-Type-Options "nosniff"
+		# Disallow being framed by other origins (clickjacking).
+		X-Frame-Options "SAMEORIGIN"
+		# Trim the Referer sent to other origins.
+		Referrer-Policy "strict-origin-when-cross-origin"
+		# Drop the server-identifying header.
+		-Server
+	}
 }

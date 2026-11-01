@@ -2,12 +2,15 @@
 Description=Poll watched repos every few minutes and redeploy smavl.rocks on change
 
 [Timer]
-# First check shortly after (re)login/boot, then every 3 minutes.
+# Wall-clock schedule: fires every 3 minutes and re-arms deterministically.
+# (The earlier monotonic OnBootSec + OnUnitActiveSec pair ran once but did not
+# reschedule under the user manager.)
+OnCalendar=*:0/3
+# Also run shortly after the user manager (re)starts, e.g. a reboot.
 OnBootSec=2min
-OnUnitActiveSec=3min
-# Spread load / avoid a fixed poll time.
-RandomizedDelaySec=30s
-# Catch up on a tick missed while the box was off.
+# A little jitter so it isn't exactly on the minute boundary.
+RandomizedDelaySec=15s
+# Catch up a run missed while the box was off.
 Persistent=true
 
 [Install]

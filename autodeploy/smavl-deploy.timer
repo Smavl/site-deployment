@@ -1,0 +1,14 @@
+[Unit]
+Description=Poll watched repos every few minutes and redeploy smavl.rocks on change
+
+[Timer]
+# First check shortly after (re)login/boot, then every 3 minutes.
+OnBootSec=2min
+OnUnitActiveSec=3min
+# Spread load / avoid a fixed poll time.
+RandomizedDelaySec=30s
+# Catch up on a tick missed while the box was off.
+Persistent=true
+
+[Install]
+WantedBy=timers.target

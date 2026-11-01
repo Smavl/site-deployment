@@ -1,0 +1,9 @@
+[Unit]
+Description=Rebuild smavl.rocks when a watched repo (zola-site / BackdoorBag / site-deployment) changes
+
+[Service]
+Type=oneshot
+ExecStart=%h/deploy/site-deployment/autodeploy/auto-deploy.sh
+# A full --no-cache rebuild on a 1 GB box takes a couple of minutes; give it
+# room but don't let a wedged build hang forever.
+TimeoutStartSec=20min
